@@ -1,0 +1,17 @@
+fieldset {
+    width: 250px;
+    line-height: 30px;
+}
+
+form {
+    display: grid;
+}
+
+form label {
+    float: left;
+}
+
+form input {
+    float: right;
+}
+
