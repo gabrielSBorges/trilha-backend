@@ -1,4 +1,6 @@
-create database if not exists dbcoldigo default character set utf8;
+create database if not exists db_coldigo default character set utf8;
+
+use db_coldigo;
 
 create table if not exists marcas (
 	id int unsigned not null primary key auto_increment,
