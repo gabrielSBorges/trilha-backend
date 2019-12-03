@@ -6,9 +6,14 @@ public class Conexao {
 	private Connection conexao;
 	
 	public Connection abrirConexao() {
+		String basepath = "localhost";
+		String database = "db_coldigo";
+		String username = "root";
+		String password = "";
+		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			conexao = java.sql.DriverManager.getConnection("jdbc:mysql://localhost/dbcoldigo?user=root&password=root&useTimezone=true&serverTimezone=UTC");
+			conexao = java.sql.DriverManager.getConnection("jdbc:mysql://" + basepath + "/" + database + "?user=" + username + "&password=" + password + "&useTimezone=true&serverTimezone=UTC");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
