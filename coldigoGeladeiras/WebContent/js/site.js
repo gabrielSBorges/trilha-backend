@@ -102,6 +102,8 @@ function isEmpty(value) {
 }
 
 $(document).ready(function() {
+    COLDIGO.PATH = "/coldigoGeladeiras/rest"
+
     $('header').load("/coldigoGeladeiras/pages/site/general/cabecalho.html");
     $('nav').load('/coldigoGeladeiras/pages/site/general/menu.html');
     $('footer').load('/coldigoGeladeiras/pages/site/general/rodape.html');

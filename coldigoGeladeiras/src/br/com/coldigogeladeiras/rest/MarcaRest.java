@@ -21,13 +21,13 @@ public class MarcaRest extends UtilRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response buscar() {
 		try {
-			List<Marca> listarMarcas = new ArrayList<Marca>();
+			List<Marca> listaMarcas = new ArrayList<Marca>();
 			
 			Conexao con = new Conexao();
 			Connection conexao = con.abrirConexao();
 			
 			JDBCMarcaDAO jdbcMarca = new JDBCMarcaDAO(conexao);
-			List<Marca> listaMarcas = jdbcMarca.buscar();
+			listaMarcas = jdbcMarca.buscar();
 			
 			con.fecharConexao();
 			

@@ -4,7 +4,7 @@ $(document).ready(function() {
     COLDIGO.produto.carregarMarcas = function() {
         $.ajax({
             type: "GET",
-            url: "/coldigoGeladeiras/rest/marca/buscar",
+            url: COLDIGO.PATH + "/marca/buscar",
             success: function(marcas) {
                 if (!COLDIGO.empty(marcas)) {
                     $("#selMarca").html("")
@@ -43,4 +43,30 @@ $(document).ready(function() {
         })
     }
     COLDIGO.produto.carregarMarcas()
+
+    COLDIGO.produto.cadastrar = function() {
+        let produto = new Object()
+        produto.categoria = document.frmAddProduto.categoria.value
+        produto.categoria = document.frmAddProduto.marcaId.value
+        produto.categoria = document.frmAddProduto.modelo.value
+        produto.categoria = document.frmAddProduto.capacidade.value
+        produto.categoria = document.frmAddProduto.valor.value
+
+        if (COLDIGO.empty(produto.categoria) || COLDIGO.empty(produto.marcaId) || COLDIGO.empty(produto.modelo) || COLDIGO.empty(produto.capacidade) || COLDIGO.empty(produto.valor)) {
+            COLDIGO.exibirAviso("Preencha todos os campos!")
+        } else {
+            $.ajax({
+                type: "POST",
+                url: COLDIGO.PATH + "/produto/inserir",
+                data:JSON.stringify(produto),
+                success: function (msg) {
+                    COLDIGO.exibirAviso(msg)
+                    $("#addProduto").trigger("reset")
+                },
+                error: function (info) {
+                    COLDIGO.exibirAviso("Erro ao cadastrar um novo produto: " + info.status + " - " + info.statusText)
+                }
+            })
+        }
+    }
 })
