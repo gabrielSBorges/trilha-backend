@@ -1,6 +1,8 @@
 let COLDIGO = new Object
 
 $(document).ready(() => {
+    COLDIGO.PATH = "/coldigoGeladeiras/rest"
+
     $("header").load("/coldigoGeladeiras/pages/admin/general/header.html")
     $("footer").load("/coldigoGeladeiras/pages/admin/general/footer.html")
 

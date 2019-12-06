@@ -6,38 +6,38 @@ public class Produto implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private int id;
-	private String categoria;
-	private int marcaId;
+	private int categoria;
+	private int marcas_id;
 	private String modelo;
 	private int capacidade;
 	private float valor;
 	
 	public int getId() {
-		return id;
+		return this.id;
 	}
 	
 	public void setId(int id) {
 		this.capacidade = id;
 	}
 	
-	public String getCategoria() {
-		return categoria;
+	public int getCategoria() {
+		return this.categoria;
 	}
 	
-	public void setCategoria(String categoria) {
+	public void setCategoria(int categoria) {
 		this.categoria = categoria;
 	}
 	
 	public int getMarcaId() {
-		return marcaId;
+		return this.marcas_id;
 	}
 	
 	public void setMarcaId(int marcaId) {
-		this.marcaId = marcaId;
+		this.marcas_id = marcaId;
 	}
 	
 	public String getModelo() {
-		return modelo;
+		return this.modelo;
 	}
 	
 	public void setModelo(String modelo) {
@@ -45,7 +45,7 @@ public class Produto implements Serializable {
 	}
 	
 	public int getCapacidade() {
-		return capacidade;
+		return this.capacidade;
 	}
 	
 	public void setCapacidade(int capacidade) {
@@ -53,7 +53,7 @@ public class Produto implements Serializable {
 	}
 	
 	public float getValor() {
-		return valor;
+		return this.valor;
 	}
 	
 	public void setValor(float valor) {

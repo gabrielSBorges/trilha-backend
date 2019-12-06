@@ -2,6 +2,8 @@ COLDIGO.produto = new Object()
 
 $(document).ready(function() {
     COLDIGO.produto.carregarMarcas = function() {
+        console.log(COLDIGO.PATH)
+        
         $.ajax({
             type: "GET",
             url: COLDIGO.PATH + "/marca/buscar",

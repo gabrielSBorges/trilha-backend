@@ -17,26 +17,27 @@ public class JDBCProdutoDAO implements ProdutoDAO {
 	public boolean inserir(Produto produto) {
 		String comando = "INSERT INTO produtos "
 				+ "(categoria, modelo, capacidade, valor, marcas_id)"
-				+ "VALUES (?, ?, ?, ?, ?, ?)";
+				+ "VALUES (?, ?, ?, ?, ?)";
 		
 		PreparedStatement p;
 		
 		try {
 			p = this.conexao.prepareStatement(comando);
 			
-			p.setString(1, produto.getCategoria());
+			p.setInt(1, produto.getCategoria());
 			p.setString(2, produto.getModelo());
 			p.setInt(3, produto.getCapacidade());
 			p.setFloat(4, produto.getValor());
 			p.setInt(5, produto.getMarcaId());
 			
-			System.out.println("------------");
-			System.out.println(p);
-			System.out.println("------------");
-			
 			p.execute();
 		} catch(SQLException e) {
 			e.printStackTrace();
+			
+			System.out.println("-------------------");
+			System.out.println(e);
+			System.out.println("-------------------");
+			
 			return false;
 		}
 		

@@ -23,3 +23,5 @@ create table if not exists produtos (
 insert into marcas (nome) values ('Brastemp'), ('Consul'), ('Generica');
 
 select * from marcas;
+
+select * from produtos;
