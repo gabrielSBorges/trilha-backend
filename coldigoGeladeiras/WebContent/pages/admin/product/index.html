@@ -14,8 +14,7 @@
 <body>
     <script src="/coldigoGeladeiras/js/product.js"></script>
 
-    <h2>Registro de produtos</h2>
-    
+    <h2>Registro de Produtos</h2>
     <form name="frmAddProduto" id="addProduto" class="frmInserir">
         <fieldset>
             <legend>Novo Produto</legend>
@@ -65,5 +64,16 @@
             </table>
         </fieldset>
     </form>
+
+    <h3>Produtos Registrador</h3>
+    <form id="filtraProduto" class="frmFiltrar">
+        <fieldset>
+            <legend>Filtrar</legend>
+            <input type="text" name="txtBusca" id="campoBuscaProduto" placeholder="Pesquise pelo modelo">
+            <button type="button">Buscar</button>
+        </fieldset>
+    </form>
+
+    <div id="listaProdutos" class="listaRegistros"></div>
 </body>
 </html>
