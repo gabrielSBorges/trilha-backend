@@ -1,4 +1,5 @@
 COLDIGO.produto = new Object()
+const path = COLDIGO.PATH
 
 $(document).ready(function() {
     COLDIGO.produto.carregarMarcas = function() {
@@ -7,38 +8,38 @@ $(document).ready(function() {
             url: path + "/marca/buscar",
             success: function(marcas) {
                 if (!COLDIGO.empty(marcas)) {
-                    $("#selMarca").html("")
+                    $("#marcas_id").html("")
 
                     let option = document.createElement("option")
                     option.setAttribute("value", "")
                     option.innerHTML = ("Escolha")
-                    $("#selMarca").append(option)
+                    $("#marcas_id").append(option)
 
                     for (const i in marcas) {
                         let option = document.createElement("option")
                         option.setAttribute("value", marcas[i].id)
                         option.innerHTML = (marcas[i].nome)
-                        $("#selMarca").append(option)
+                        $("#marcas_id").append(option)
                     }
                 } else {
-                    $("#selMarca").html("")
+                    $("#marcas_id").html("")
 
                     let option = document.createElement("option")
                     option.setAttribute("value", "")
                     option.innerHTML = ("Cadastre uma marca primeiro!")
-                    $("#selMarca").append(option)
-                    $("#selMarca").addClass("aviso")
+                    $("#marcas_id").append(option)
+                    $("#marcas_id").addClass("aviso")
                 }
             },
             error: function(info) {
                 COLDIGO.exibirAviso("Erro ao buscar as marcas: " + info.status + " - " + info.statusText)
 
-                $("#selMarca").html("")
+                $("#marcas_id").html("")
                 let option = document.createElement("option")
                 option.setAttribute("value", "")
                 option.innerHTML = ("Erro ao carregar marcas!")
-                $("#selMarca").append(option)
-                $("#selMarca").addClass("aviso")
+                $("#marcas_id").append(option)
+                $("#marcas_id").addClass("aviso")
             }
         })
     }
@@ -47,13 +48,21 @@ $(document).ready(function() {
     COLDIGO.produto.cadastrar = function() {
         let produto = new Object()
         produto.categoria = document.frmAddProduto.categoria.value
-        produto.categoria = document.frmAddProduto.marcaId.value
-        produto.categoria = document.frmAddProduto.modelo.value
-        produto.categoria = document.frmAddProduto.capacidade.value
-        produto.categoria = document.frmAddProduto.valor.value
+        produto.marcas_id = document.frmAddProduto.marcas_id.value
+        produto.modelo = document.frmAddProduto.modelo.value
+        produto.capacidade = document.frmAddProduto.capacidade.value
+        produto.valor = document.frmAddProduto.valor.value
 
-        if (COLDIGO.empty(produto.categoria) || COLDIGO.empty(produto.marcaId) || COLDIGO.empty(produto.modelo) || COLDIGO.empty(produto.capacidade) || COLDIGO.empty(produto.valor)) {
-            COLDIGO.exibirAviso("Preencha todos os campos!")
+        if (COLDIGO.empty(produto.categoria)) {
+            COLDIGO.exibirAviso("Selecione uma categoria!")
+        } else if (COLDIGO.empty(produto.marcas_id)) {
+            COLDIGO.exibirAviso("Selecione uma marca!")
+        } else if (COLDIGO.empty(produto.modelo)) {
+            COLDIGO.exibirAviso("Informe o modelo!")
+        } else if (COLDIGO.empty(produto.capacidade)) {
+            COLDIGO.exibirAviso("Informe a capacidade!")
+        } else if (COLDIGO.empty(produto.valor)) {
+            COLDIGO.exibirAviso("Informe o valor!")
         } else {
             $.ajax({
                 type: "POST",

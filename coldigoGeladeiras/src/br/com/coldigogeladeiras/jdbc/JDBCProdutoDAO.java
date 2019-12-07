@@ -31,12 +31,12 @@ public class JDBCProdutoDAO implements ProdutoDAO {
 			p.setInt(5, produto.getMarcaId());
 			
 			p.execute();
+			
+			return true;
 		} catch(SQLException e) {
 			e.printStackTrace();
 			
 			return false;
 		}
-		
-		return true;
 	}
 }

@@ -29,7 +29,7 @@ public class ProdutoRest extends UtilRest {
 			boolean retorno = jdbcProduto.inserir(produto);
 			
 			String msg = "";
-			
+
 			if (retorno) {
 				msg = "Produto cadastro com sucesso!";
 			} else {
@@ -38,7 +38,7 @@ public class ProdutoRest extends UtilRest {
 			
 			con.fecharConexao();
 			
-			return this.buildErrorResponse(msg);
+			return this.buildResponse(msg);
 		} catch(Exception e) {
 			e.printStackTrace();
 			return this.buildErrorResponse(e.getLocalizedMessage());
