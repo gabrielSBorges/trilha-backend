@@ -2,11 +2,9 @@ COLDIGO.produto = new Object()
 
 $(document).ready(function() {
     COLDIGO.produto.carregarMarcas = function() {
-        console.log(COLDIGO.PATH)
-        
         $.ajax({
             type: "GET",
-            url: COLDIGO.PATH + "/marca/buscar",
+            url: path + "/marca/buscar",
             success: function(marcas) {
                 if (!COLDIGO.empty(marcas)) {
                     $("#selMarca").html("")
@@ -59,7 +57,7 @@ $(document).ready(function() {
         } else {
             $.ajax({
                 type: "POST",
-                url: COLDIGO.PATH + "/produto/inserir",
+                url: path + "/produto/inserir",
                 data:JSON.stringify(produto),
                 success: function (msg) {
                     COLDIGO.exibirAviso(msg)

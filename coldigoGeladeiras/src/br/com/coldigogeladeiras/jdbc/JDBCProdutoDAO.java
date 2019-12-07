@@ -34,10 +34,6 @@ public class JDBCProdutoDAO implements ProdutoDAO {
 		} catch(SQLException e) {
 			e.printStackTrace();
 			
-			System.out.println("-------------------");
-			System.out.println(e);
-			System.out.println("-------------------");
-			
 			return false;
 		}
 		
