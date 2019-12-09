@@ -1,12 +1,20 @@
 package br.com.coldigogeladeiras.rest;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.coldigogeladeiras.db.Conexao;
 import br.com.coldigogeladeiras.jdbc.JDBCProdutoDAO;
@@ -42,6 +50,32 @@ public class ProdutoRest extends UtilRest {
 		} catch(Exception e) {
 			e.printStackTrace();
 			return this.buildErrorResponse(e.getLocalizedMessage());
+		}
+	}
+	
+	@GET
+	@Path("/buscar")
+	@Consumes("application/*")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response buscaPorNome(@QueryParam("valorBusca") String nome) {
+		try {
+			List<JsonObject> listaProdutos = new ArrayList<JsonObject>();
+			
+			Conexao con = new Conexao();
+			Connection conexao = con.abrirConexao();
+			JDBCProdutoDAO jdbcProduto = new JDBCProdutoDAO(conexao);
+			
+			listaProdutos = jdbcProduto.buscarPorNome(nome);
+			
+			con.fecharConexao();
+			
+			String json = new Gson().toJson(listaProdutos);
+			
+			return this.buildResponse(json);
+		} catch(Exception e) {
+			e.printStackTrace();
+			
+			return this.buildErrorResponse(e.getMessage());
 		}
 	}
 }

@@ -78,4 +78,20 @@ $(document).ready(function() {
             })
         }
     }
+
+    COLDIGO.produto.buscar = function() {
+        let valorBusca = $("#campoBuscaProduto").val()
+
+        $.ajax({
+            type: "GET",
+            url: path + "/produto/buscar",
+            data: "valorBusca=" + valorBusca, 
+            success: function(dados) {
+
+            },
+            error: function(info) {
+                COLDIGO.exibirAviso("Erro ao consultar os contatos: " + info.status + " - " + info.statusText)
+            }
+        })
+    }
 })
