@@ -36,15 +36,15 @@ public class ProdutoRest extends UtilRest {
 			
 			boolean retorno = jdbcProduto.inserir(produto);
 			
+			con.fecharConexao();
+
 			String msg = "";
 
 			if (retorno) {
-				msg = "Produto cadastro com sucesso!";
+				msg = "Produto cadastrado com sucesso!";
 			} else {
 				msg = "Erro ao cadastrar produto.";
 			}
-			
-			con.fecharConexao();
 			
 			return this.buildResponse(msg);
 		} catch(Exception e) {
