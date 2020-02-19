@@ -1,0 +1,11 @@
+127.0.0.1 - - [29/Nov/2019:19:54:04 -0200] "GET / HTTP/1.1" 404 1036
+0:0:0:0:0:0:0:1 - - [29/Nov/2019:19:54:18 -0200] "GET /coldigoGeladeiras/ HTTP/1.1" 200 1578
+0:0:0:0:0:0:0:1 - - [29/Nov/2019:19:54:18 -0200] "GET /coldigoGeladeiras/css/style.css HTTP/1.1" 200 2408
+0:0:0:0:0:0:0:1 - - [29/Nov/2019:19:54:18 -0200] "GET /coldigoGeladeiras/js/site.js HTTP/1.1" 200 3159
+0:0:0:0:0:0:0:1 - - [29/Nov/2019:19:54:18 -0200] "GET /coldigoGeladeiras/imgs/geladeira1.png HTTP/1.1" 200 21198
+0:0:0:0:0:0:0:1 - - [29/Nov/2019:19:54:18 -0200] "GET /coldigoGeladeiras/imgs/geladeira2.png HTTP/1.1" 200 18537
+0:0:0:0:0:0:0:1 - - [29/Nov/2019:19:54:19 -0200] "GET /coldigoGeladeiras/pages/site/general/cabecalho.html HTTP/1.1" 200 106
+0:0:0:0:0:0:0:1 - - [29/Nov/2019:19:54:19 -0200] "GET /coldigoGeladeiras/pages/site/general/rodape.html HTTP/1.1" 200 39
+0:0:0:0:0:0:0:1 - - [29/Nov/2019:19:54:19 -0200] "GET /coldigoGeladeiras/pages/site/general/menu.html HTTP/1.1" 200 268
+0:0:0:0:0:0:0:1 - - [29/Nov/2019:19:54:19 -0200] "GET /favicon.ico HTTP/1.1" 404 1047
+0:0:0:0:0:0:0:1 - - [29/Nov/2019:19:54:19 -0200] "GET /coldigoGeladeiras/imgs/logo.png HTTP/1.1" 200 91448
