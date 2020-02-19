@@ -66,11 +66,11 @@
     </form>
 
     <h3>Produtos Registrador</h3>
-    <form id="filtraProduto" class="frmFiltrar">
+    <form id="filtraProduto" class="frmFiltrar" onsubmit="">
         <fieldset>
             <legend>Filtrar</legend>
             <input type="text" name="txtBusca" id="campoBuscaProduto" placeholder="Pesquise pelo modelo">
-            <button type="button">Buscar</button>
+            <button type="submit" onclick="COLDIGO.produto.buscar()">Buscar</button>
         </fieldset>
     </form>
 

@@ -41,6 +41,7 @@ INDEX VERSION 1.131+C:\Users\borge\Documents\projetos\curso\trilha-backend\.meta
 265000039.index
 1872711010.index
 549475379.index
+1513309891.index
 3328250225.index
 2268011737.index
 2710905261.index
