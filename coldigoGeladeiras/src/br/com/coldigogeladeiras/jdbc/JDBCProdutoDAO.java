@@ -23,8 +23,8 @@ public class JDBCProdutoDAO implements ProdutoDAO {
 	
 	public boolean inserir(Produto produto) {
 		String comando = "INSERT INTO produtos "
-				+ "(categoria, modelo, capacidade, valor, marcas_id)"
-				+ "VALUES (?, ?, ?, ?, ?)";
+		+ "(categoria, modelo, capacidade, valor, marcas_id)"
+		+ "VALUES (?, ?, ?, ?, ?)";
 		
 		PreparedStatement p;
 		
@@ -46,12 +46,12 @@ public class JDBCProdutoDAO implements ProdutoDAO {
 			return false;
 		}
 	}
-
+	
 	public List<JsonObject> buscarPorNome(String nome) {
-		String comando = "SELECT produtos.*, marcas.nome as marca FROM produtos INNER JOIN marcas ON produtos.marcas_id = marcas.id";
+		String comando = "SELECT produtos.*, marcas.nome as marca FROM produtos INNER JOIN marcas ON produtos.marcas_id = marcas.id ";
 		
 		if (!nome.contentEquals("")) {
-			comando += "WHERE modela LIKE '%" + nome + "%'";
+			comando += "WHERE modelo LIKE '%" + nome + "%' ";
 		}
 		
 		comando += "ORDER BY categoria ASC, marcas.nome ASC, modelo ASC";
@@ -77,6 +77,7 @@ public class JDBCProdutoDAO implements ProdutoDAO {
 					categoria = "Freezer";
 				}
 				
+				produto = new JsonObject();
 				produto.addProperty("id", id);
 				produto.addProperty("categoria", categoria);
 				produto.addProperty("modelo", modelo);
@@ -90,6 +91,53 @@ public class JDBCProdutoDAO implements ProdutoDAO {
 			e.printStackTrace();
 		}
 		
+		
 		return listaProdutos;
+	}
+	
+	public boolean deletar(int id) {
+		String comando = "DELETE FROM produtos WHERE id = ?";
+		PreparedStatement p;
+		
+		try {
+			p = this.conexao.prepareStatement(comando);
+			p.setInt(1, id);
+			p.execute();
+		} catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public Produto buscarPorId(int id) {
+		String comando = "select * from produtos where produtos.id = ?";
+		Produto produto = new Produto();
+		
+		try {
+			PreparedStatement p = this.conexao.prepareStatement(comando);
+			p.setInt(1, id);
+			ResultSet rs = p.executeQuery();
+			
+			while (rs.next()) {
+				int categoria = rs.getInt("categoria");
+				String modelo = rs.getString("modelo");
+				int capacidade = rs.getInt("capacidade");
+				float valor = rs.getFloat("valor");
+				int marcaId = rs.getInt("marcas_id");
+
+				produto.setId(id);
+				produto.setCategoria(categoria);
+				produto.setMarcaId(marcaId);
+				produto.setModelo(modelo);
+				produto.setCapacidade(capacidade);
+				produto.setValor(valor);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return produto;
 	}
 }
