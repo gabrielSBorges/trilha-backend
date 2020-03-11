@@ -29,6 +29,9 @@ $(document).ready(() => {
     }
 
     COLDIGO.carregaPagina = (pagename) => {
+        if ($(".ui-dialog")) {
+            $(".ui-dialog").remove();
+        }
         $("section").empty()
         $("section").load(pagename + "/", (response, status, info) => {
             if (status == "error") {

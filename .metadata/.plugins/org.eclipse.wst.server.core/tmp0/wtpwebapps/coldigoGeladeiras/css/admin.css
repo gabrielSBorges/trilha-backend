@@ -54,6 +54,10 @@ nav .opcao:hover {
     background-color: #83afd3;
 }
 
+.hidden {
+    display: none;
+}
+
 .dropdown {
     position: relative;
     display: inline-block;

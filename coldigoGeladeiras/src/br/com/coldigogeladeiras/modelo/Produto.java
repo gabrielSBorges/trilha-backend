@@ -17,7 +17,7 @@ public class Produto implements Serializable {
 	}
 	
 	public void setId(int id) {
-		this.capacidade = id;
+		this.id = id;
 	}
 	
 	public int getCategoria() {
@@ -59,4 +59,10 @@ public class Produto implements Serializable {
 	public void setValor(float valor) {
 		this.valor = valor;
 	}
+	
+	@Override
+    public String toString()
+    {
+        return "" + this.id + "";
+    }
 }

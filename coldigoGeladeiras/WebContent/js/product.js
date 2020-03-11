@@ -1,7 +1,8 @@
-COLDIGO.produto = new Object()
-const path = COLDIGO.PATH
+COLDIGO.produto = new Object();
 
 $(document).ready(function() {
+    const path = COLDIGO.PATH;
+
     COLDIGO.produto.carregarMarcas = function(id) {
         let select;
         if (id !== undefined) {
@@ -80,11 +81,12 @@ $(document).ready(function() {
                 url: path + "/produto/inserir",
                 data:JSON.stringify(produto),
                 success: function (msg) {
-                    COLDIGO.exibirAviso(msg)
-                    $("#addProduto").trigger("reset")
+                    COLDIGO.exibirAviso(msg);
+                    $("#addProduto").trigger("reset");
+                    COLDIGO.produto.buscar();
                 },
                 error: function (info) {
-                    COLDIGO.exibirAviso("Erro ao cadastrar um novo produto: " + info.status + " - " + info.statusText)
+                    COLDIGO.exibirAviso("Erro ao cadastrar um novo produto: " + info.status + " - " + info.statusText);
                 }
             })
         }
@@ -165,6 +167,8 @@ $(document).ready(function() {
             url: COLDIGO.PATH + "/produto/buscarPorId",
             data: { id },
             success: function(produto) {
+                console.log(produto.id);
+
                 document.frmEditarProduto.idProduto.value = produto.id;
                 document.frmEditarProduto.modelo.value = produto.modelo;
                 document.frmEditarProduto.capacidade.value = produto.capacidade;
@@ -209,20 +213,26 @@ $(document).ready(function() {
     }
 
     COLDIGO.produto.editar = function() {
+        const { idProduto, categoria, marcaId, modelo, capacidade, valor } = document.frmEditarProduto;
+
         let produto = {};
-        produto.id = document.frmEditarProduto.idProduto.value;
-        produto.categoria = document.frmEditarProduto.categoria.value;
-        produto.marcas_id = document.frmEditarProduto.marcas_id.value;
-        produto.modelo = document.frmEditarProduto.modelo.value;
-        produto.capacidade = document.frmEditarProduto.capacidade.value;
-        produto.valor = document.frmEditarProduto.valor.value;
+        produto.id = parseInt(idProduto.value);
+        produto.categoria = parseInt(categoria.value);
+        produto.marcas_id = parseInt(marcaId.value);
+        produto.modelo = modelo.value;
+        produto.capacidade = parseInt(capacidade.value);
+        produto.valor = parseFloat(valor.value);
+
+        console.log(produto);
 
         $.ajax({
             type: "PUT",
             url: path + "/produto/alterar",
             data: JSON.stringify(produto),
             success: function(msg) {
-
+                COLDIGO.exibirAviso(msg);
+                COLDIGO.produto.buscar();
+                $("#modalEditarProduto").dialog("close");
             },
             error: function(info) {
                 COLDIGO.exibirAviso(`Erro ao editar produto: ${info.status} - ${info.statusText}`);
