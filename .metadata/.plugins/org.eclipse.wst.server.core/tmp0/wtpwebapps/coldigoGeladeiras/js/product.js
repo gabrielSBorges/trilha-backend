@@ -167,8 +167,6 @@ $(document).ready(function() {
             url: COLDIGO.PATH + "/produto/buscarPorId",
             data: { id },
             success: function(produto) {
-                console.log(produto.id);
-
                 document.frmEditarProduto.idProduto.value = produto.id;
                 document.frmEditarProduto.modelo.value = produto.modelo;
                 document.frmEditarProduto.capacidade.value = produto.capacidade;
@@ -222,8 +220,6 @@ $(document).ready(function() {
         produto.modelo = modelo.value;
         produto.capacidade = parseInt(capacidade.value);
         produto.valor = parseFloat(valor.value);
-
-        console.log(produto);
 
         $.ajax({
             type: "PUT",

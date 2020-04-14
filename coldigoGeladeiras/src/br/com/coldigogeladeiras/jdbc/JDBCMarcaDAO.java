@@ -8,14 +8,52 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonObject;
+
 import br.com.coldigogeladeiras.jdbcinterface.MarcaDAO;
 import br.com.coldigogeladeiras.modelo.Marca;
 
 public class JDBCMarcaDAO implements MarcaDAO {
 	private Connection conexao;
+	private JsonObject marca;
 	
 	public JDBCMarcaDAO(Connection conexao) {
 		this.conexao = conexao;
+	}
+	
+	public List<JsonObject> buscarPorNome(String marcaNome) {
+		String comando = "SELECT * FROM marcas ";
+		
+		if (!marcaNome.contentEquals("")) {
+			comando += "WHERE nome LIKE '%" + marcaNome + "%' ";
+		}
+		
+		comando += "ORDER BY nome ASC";
+		
+		List<JsonObject> listaMarcas = new ArrayList<JsonObject>();
+		marca = null;
+		
+		try {
+			Statement stmt = conexao.createStatement();
+			ResultSet rs = stmt.executeQuery(comando);
+			
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String nome = rs.getString("nome");
+				
+				
+				marca = new JsonObject();
+				marca.addProperty("id", id);
+				marca.addProperty("nome", nome);
+				
+				listaMarcas.add(marca);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return listaMarcas;
 	}
 
 	public List<Marca> buscar() {

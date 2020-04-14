@@ -17,9 +17,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import br.com.coldigogeladeiras.db.Conexao;
 import br.com.coldigogeladeiras.jdbc.JDBCMarcaDAO;
+import br.com.coldigogeladeiras.jdbc.JDBCProdutoDAO;
 import br.com.coldigogeladeiras.modelo.Marca;
 
 @Path("marca")
@@ -42,6 +44,32 @@ public class MarcaRest extends UtilRest {
 			return this.buildResponse(listaMarcas);
 		} catch(Exception e) {
 			e.printStackTrace();
+			return this.buildErrorResponse(e.getMessage());
+		}
+	}
+	
+	@GET
+	@Path("/buscar/nome")
+	@Consumes("application/*")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response buscaPorNome(@QueryParam("valorBusca") String nome) {
+		try {
+			List<JsonObject> listaMarcas = new ArrayList<JsonObject>();
+			
+			Conexao con = new Conexao();
+			Connection conexao = con.abrirConexao();
+			JDBCMarcaDAO jdbcMarca = new JDBCMarcaDAO(conexao);
+			
+			listaMarcas = jdbcMarca.buscarPorNome(nome);
+			
+			con.fecharConexao();
+			
+			String json = new Gson().toJson(listaMarcas);
+			
+			return this.buildResponse(json);
+		} catch(Exception e) {
+			e.printStackTrace();
+			
 			return this.buildErrorResponse(e.getMessage());
 		}
 	}
