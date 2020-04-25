@@ -4,8 +4,10 @@ $(document).ready(function() {
   const path = COLDIGO.PATH;
 
   COLDIGO.marca.cadastrar = function() {
+    const { nome } = document.frmAddMarca;
+    
     let marca = new Object()
-    marca.nome = document.frmAddMarca.nome.value
+    marca.nome = nome.value;
 
     if (COLDIGO.empty(marca.nome)) {
       COLDIGO.exibirAviso("Digite um nome para a marca!")
@@ -17,10 +19,11 @@ $(document).ready(function() {
         success: function (msg) {
           COLDIGO.exibirAviso(msg);
           $("#addMarca").trigger("reset");
+
           COLDIGO.marca.buscarPorNome();
         },
         error: function (info) {
-          COLDIGO.exibirAviso("Erro ao cadastrar uma nova marca: " + info.status + " - " + info.statusText);
+          COLDIGO.exibirAviso(`${info.status} - ${info.responseText}`);
         }
       })
     }
@@ -35,10 +38,11 @@ $(document).ready(function() {
       data: "valorBusca=" + valorBusca, 
       success: function(dados) {
         dados = JSON.parse(dados);
+        
         $('#listaMarcas').html(COLDIGO.marca.exibir(dados));
       },
       error: function(info) {
-        COLDIGO.exibirAviso("Erro ao consultar os contatos: " + info.status + " - " + info.statusText);
+        COLDIGO.exibirAviso(`${info.status} - ${info.responseText}`);
       }
     })
   }
@@ -52,20 +56,19 @@ $(document).ready(function() {
         COLDIGO.marca.buscarPorNome();
       },
       error: function(info) {
-        COLDIGO.exibirAviso(`Erro ao excluir marca ${info.status} - ${info.statusText}`);
+        COLDIGO.exibirAviso(`${info.status} - ${info.responseText}`);
       }
     });
   }
 
   COLDIGO.marca.editar = function() {
-    const { idMarca, nome } = document.frmEditarMarca;
+    const { idMarca, nome, status } = document.frmEditarMarca;
 
     let marca = {};
     marca.id = parseInt(idMarca.value);
     marca.nome = nome.value;
-    
-    console.log(marca);
-    
+    marca.status = status.checked ? 1 : 0;
+
     $.ajax({
       type: "PUT",
       url: path + "/marca/alterar",
@@ -76,7 +79,29 @@ $(document).ready(function() {
         $("#modalEditarMarca").dialog("close");
       },
       error: function(info) {
-        COLDIGO.exibirAviso(`Erro ao editar marca: ${info.status} - ${info.statusText}`);
+        COLDIGO.exibirAviso(`${info.status} - ${info.responseText}`);
+      }
+    });
+  }
+
+  COLDIGO.marca.alterarStatus = function(id, status) {
+    let novoStatus;
+    if (status == 1) {
+      novoStatus = 0;
+    } else {
+      novoStatus = 1;
+    }
+
+    $.ajax({
+      type: "PUT",
+      url: path + `/marca/alterarStatus/${id}/${novoStatus}`,
+      success: function(msg) {
+        COLDIGO.exibirAviso(msg);
+        COLDIGO.marca.buscarPorNome();
+      },
+      error: function(info) {
+        COLDIGO.exibirAviso(`${info.status} - ${info.responseText}`);
+        COLDIGO.marca.buscarPorNome();
       }
     });
   }
@@ -85,30 +110,39 @@ $(document).ready(function() {
     let tabela = `
       <table>
         <tr>
+          <th></th>
           <th>Nome</th>
+          <th>Status</th>
           <th class='acoes'>Ações</th>
         </tr>
     `;
 
-      if (listaDeMarcas != undefined && listaDeMarcas.length > 0) {
-          for (marca of listaDeMarcas) {
-              tabela += `
-                  <tr>
-                      <td>${marca.nome}</td>
-                      <td>
-                          <a onclick='COLDIGO.marca.exibirEdicao(${marca.id})'><img src='/coldigoGeladeiras/imgs/edit.png' alt='Editar registro'></a>
-                          <a onclick='COLDIGO.marca.excluir(${marca.id})'><img src='/coldigoGeladeiras/imgs/delete.png' alt='Excluir registro'></a>
-                      </td>
-                  </tr>
-              `;
-          }
-      } else if (listaDeMarcas == "") {
-          tabela += "<tr><td colspan='6'>Nenhum registro encontrado</td></tr>";
+    if (listaDeMarcas != undefined && listaDeMarcas.length > 0) {
+      for (marca of listaDeMarcas) {
+        tabela += `
+          <tr>
+            <td style="width: 30px;">
+              <label class="switch">
+                <input name="status" type="checkbox" ${marca.status ? 'checked' : ''} onclick="COLDIGO.marca.alterarStatus(${marca.id},${marca.status})">
+                <span class="slider"></span>
+              </label>
+            </td>
+            <td>${marca.nome}</td>
+            <td>${marca.status ? 'Ativa' : 'Desativada' }</td>
+            <td>
+              <a onclick='COLDIGO.marca.exibirEdicao(${marca.id})'><img src='/coldigoGeladeiras/imgs/edit.png' alt='Editar registro'></a>
+              <a onclick='COLDIGO.marca.excluir(${marca.id})'><img src='/coldigoGeladeiras/imgs/delete.png' alt='Excluir registro'></a>
+            </td>
+          </tr>
+        `;
       }
+    } else if (listaDeMarcas == "") {
+      tabela += "<tr><td colspan='6'>Nenhum registro encontrado</td></tr>";
+    }
 
-      tabela += "</table>"
-        
-      return tabela;
+    tabela += "</table>"
+      
+    return tabela;
   }
 
   COLDIGO.marca.exibirEdicao = function(id){
@@ -119,6 +153,7 @@ $(document).ready(function() {
         success: function(marca) {
             document.frmEditarMarca.idMarca.value = marca.id;
             document.frmEditarMarca.nome.value = marca.nome;
+            document.frmEditarMarca.status.checked = marca.status;
 
             let modalEditarMarca = {
                 title: "Editar Marca",
@@ -141,7 +176,7 @@ $(document).ready(function() {
             $("#modalEditarMarca").dialog(modalEditarMarca);
         },
         error: function(info) {
-            COLDIGO.exibirAviso(`Erro ao buscar marca para edição: ${info.status} - ${info.statusText}`);
+          COLDIGO.exibirAviso(`${info.status} - ${info.responseText}`);
         }
     });
   }

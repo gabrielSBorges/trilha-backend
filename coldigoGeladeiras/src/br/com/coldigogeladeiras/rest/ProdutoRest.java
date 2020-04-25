@@ -13,18 +13,71 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
 
 import br.com.coldigogeladeiras.db.Conexao;
 import br.com.coldigogeladeiras.jdbc.JDBCProdutoDAO;
 import br.com.coldigogeladeiras.modelo.Produto;
+import br.com.coldigogeladeiras.modelo.Retorno;
 
 @Path("produto")
 public class ProdutoRest extends UtilRest {
+	@GET
+	@Path("/buscarPorId")
+	@Consumes("application/*")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response buscarPorId(@QueryParam("id") int id) {
+		try {
+			Conexao conec = new Conexao();
+			Connection conexao = conec.abrirConexao();
+			
+			JDBCProdutoDAO jdbcProduto = new JDBCProdutoDAO(conexao);
+			Retorno retorno = jdbcProduto.buscarPorId(id);
+			
+			conec.fecharConexao();
+			
+			if (retorno.getStatus() == "sucesso") {				
+				return this.buildResponse(retorno.getProduto());
+			}
+			else {
+				return this.buildErrorResponse(retorno.getMessage());				
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			return this.buildErrorResponse("Ocorreu um erro ao tentar buscar o produto! \n Erro: \n" + e.getMessage());
+		}
+	}
+	
+	@GET
+	@Path("/buscar")
+	@Consumes("application/*")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response buscaPorNome(@QueryParam("valorBusca") String nome) {
+		try {
+			Conexao con = new Conexao();
+			Connection conexao = con.abrirConexao();
+			
+			JDBCProdutoDAO jdbcProduto = new JDBCProdutoDAO(conexao);
+			Retorno retorno = jdbcProduto.buscarPorNome(nome);
+			
+			con.fecharConexao();
+			
+			if (retorno.getStatus() == "sucesso") {
+				String json = new Gson().toJson(retorno.getListJson());
+				return this.buildResponse(json);
+			}
+			else {
+				return this.buildErrorResponse(retorno.getMessage());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			return this.buildErrorResponse("Ocorreu um erro ao tentar listar os produtos! \n Erro: \n" + e.getMessage());
+		}
+	}
+	
 	@POST
 	@Path("/inserir")
 	@Consumes("application/*")
@@ -36,49 +89,48 @@ public class ProdutoRest extends UtilRest {
 			Connection conexao = con.abrirConexao();
 			
 			JDBCProdutoDAO jdbcProduto = new JDBCProdutoDAO(conexao);
-			
-			boolean retorno = jdbcProduto.inserir(produto);
+			Retorno retorno = jdbcProduto.inserir(produto);
 			
 			con.fecharConexao();
-
-			String msg = "";
-
-			if (retorno) {
-				msg = "Produto cadastrado com sucesso!";
-			} else {
-				msg = "Erro ao cadastrar produto.";
+	
+			if (retorno.getStatus() == "sucesso") {				
+				return this.buildResponse(retorno.getMessage());
 			}
-			
-			return this.buildResponse(msg);
-		} catch(Exception e) {
+			else {
+				return this.buildErrorResponse(retorno.getMessage());
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
-			return this.buildErrorResponse(e.getLocalizedMessage());
+			
+			return this.buildErrorResponse("Ocorreu um erro ao tentar cadastrar o produto! \n Erro: \n" + e.getMessage());
 		}
 	}
 	
-	@GET
-	@Path("/buscar")
+	@PUT
+	@Path("/alterar")
 	@Consumes("application/*")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response buscaPorNome(@QueryParam("valorBusca") String nome) {
-		try {
-			List<JsonObject> listaProdutos = new ArrayList<JsonObject>();
+	public Response alterar(String produtoParam) {
+		try {	
+			Produto produto = new Gson().fromJson(produtoParam, Produto.class);
 			
-			Conexao con = new Conexao();
-			Connection conexao = con.abrirConexao();
+			Conexao conec = new Conexao();
+			Connection conexao = conec.abrirConexao();
+			
 			JDBCProdutoDAO jdbcProduto = new JDBCProdutoDAO(conexao);
+			Retorno retorno = jdbcProduto.alterar(produto);
 			
-			listaProdutos = jdbcProduto.buscarPorNome(nome);
+			conec.fecharConexao();
 			
-			con.fecharConexao();
-			
-			String json = new Gson().toJson(listaProdutos);
-			
-			return this.buildResponse(json);
-		} catch(Exception e) {
+			if (retorno.getStatus() == "sucesso") {				
+				return this.buildResponse(retorno.getMessage());
+			}
+			else {
+				return this.buildErrorResponse(retorno.getMessage());				
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 			
-			return this.buildErrorResponse(e.getMessage());
+			return this.buildErrorResponse("Ocorreu um erro ao tentar alterar o produto! \n Erro: \n" + e.getMessage());
 		}
 	}
 
@@ -89,72 +141,22 @@ public class ProdutoRest extends UtilRest {
 		try {
 			Conexao conec = new Conexao();
 			Connection conexao = conec.abrirConexao();
-			JDBCProdutoDAO jdbcProduto = new JDBCProdutoDAO(conexao);
 			
-			boolean retorno = jdbcProduto.deletar(id);
-
-			String msg = "";
-			if (retorno) {
-				msg = "Produto excluído com sucesso!";
-			} else {
-				msg = "Erro ao excluir produto.";
+			JDBCProdutoDAO jdbcProduto = new JDBCProdutoDAO(conexao);
+			Retorno retorno = jdbcProduto.deletar(id);
+	
+			conec.fecharConexao();
+			
+			if (retorno.getStatus() == "sucesso") {
+				return this.buildResponse(retorno.getMessage());				
 			}
-
-			conec.fecharConexao();
-
-			return this.buildResponse(msg);
-		} catch(Exception e) {
-			e.printStackTrace();
-			return this.buildErrorResponse(e.getMessage());
-		}
-	}
-
-	@GET
-	@Path("/buscarPorId")
-	@Consumes("application/*")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response buscarPorId(@QueryParam("id") int id) {
-		try {
-			Produto produto = new Produto();
-			Conexao conec = new Conexao();
-			Connection conexao = conec.abrirConexao();
-			JDBCProdutoDAO jdbcProduto = new JDBCProdutoDAO(conexao);
-
-			produto = jdbcProduto.buscarPorId(id);
-
-			conec.fecharConexao();
-
-			return this.buildResponse(produto);
-		} catch(Exception e) {
-			e.printStackTrace();
-			return this.buildErrorResponse(e.getMessage());
-		}
-	}
-
-	@PUT
-	@Path("/alterar")
-	@Consumes("application/*")
-	public Response alterar(String produtoParam) {
-		try {
-			Produto produto = new Gson().fromJson(produtoParam, Produto.class);
-			Conexao conec = new Conexao();
-			Connection conexao = conec.abrirConexao();
-			JDBCProdutoDAO jdbcProduto = new JDBCProdutoDAO(conexao);
-			
-			boolean retorno = jdbcProduto.alterar(produto);
-			
-			String msg = "";
-			if (retorno) {
-				msg = "Produto alterado com sucesso!";
-			} else {
-				msg = "Erro ao alterar produto";
+			else {
+				return this.buildErrorResponse(retorno.getMessage());				
 			}
-			
-			conec.fecharConexao();
-			return this.buildResponse(msg);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			return this.buildErrorResponse(e.getMessage());
+			
+			return this.buildErrorResponse("Ocorreu um erro ao tentar remover o produto! \n Erro: \n" + e.getMessage());
 		}
 	}
 }

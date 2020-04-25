@@ -45,7 +45,7 @@ $(document).ready(function() {
                 }
             },
             error: function(info) {
-                COLDIGO.exibirAviso("Erro ao buscar as marcas: " + info.status + " - " + info.statusText)
+                COLDIGO.exibirAviso(`${info.status} - ${info.responseText}`);
 
                 $(select).html("")
                 let option = document.createElement("option")
@@ -73,8 +73,12 @@ $(document).ready(function() {
             COLDIGO.exibirAviso("Informe o modelo!")
         } else if (COLDIGO.empty(produto.capacidade)) {
             COLDIGO.exibirAviso("Informe a capacidade!")
+        } else if (isNaN(produto.capacidade)) {
+            COLDIGO.exibirAviso("O campo 'capacidade' não aceita esse tipo de dado!")
         } else if (COLDIGO.empty(produto.valor)) {
             COLDIGO.exibirAviso("Informe o valor!")
+        } else if (isNaN(produto.valor)) {
+            COLDIGO.exibirAviso("O campo 'valor' não aceita esse tipo de dado!")
         } else {
             $.ajax({
                 type: "POST",
@@ -86,7 +90,7 @@ $(document).ready(function() {
                     COLDIGO.produto.buscar();
                 },
                 error: function (info) {
-                    COLDIGO.exibirAviso("Erro ao cadastrar um novo produto: " + info.status + " - " + info.statusText);
+                    COLDIGO.exibirAviso(`${info.status} - ${info.responseText}`);
                 }
             })
         }
@@ -104,7 +108,7 @@ $(document).ready(function() {
                 $('#listaProdutos').html(COLDIGO.produto.exibir(dados));
             },
             error: function(info) {
-                COLDIGO.exibirAviso("Erro ao consultar os contatos: " + info.status + " - " + info.statusText);
+                COLDIGO.exibirAviso(`${info.status} - ${info.responseText}`);
             }
         })
     }
@@ -156,7 +160,7 @@ $(document).ready(function() {
                 COLDIGO.produto.buscar();
             },
             error: function(info) {
-                COLDIGO.exibirAviso(`Erro ao excluir produto ${info.status} - ${info.statusText}`);
+                COLDIGO.exibirAviso(`${info.status} - ${info.responseText}`);
             }
         });
     }
@@ -205,7 +209,7 @@ $(document).ready(function() {
                 $("#modalEditarProduto").dialog(modalEditarProduto);
             },
             error: function(info) {
-                COLDIGO.exibirAviso(`Erro ao buscar produto para edição: ${info.status} - ${info.statusText}`);
+                COLDIGO.exibirAviso(`${info.status} - ${info.responseText}`);
             }
         });
     }
@@ -231,7 +235,7 @@ $(document).ready(function() {
                 $("#modalEditarProduto").dialog("close");
             },
             error: function(info) {
-                COLDIGO.exibirAviso(`Erro ao editar produto: ${info.status} - ${info.statusText}`);
+                COLDIGO.exibirAviso(`${info.status} - ${info.responseText}`);
             }
         });
     }

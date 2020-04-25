@@ -1,15 +1,12 @@
 package br.com.coldigogeladeiras.jdbcinterface;
 
-import java.util.List;
-
-import com.google.gson.JsonObject;
-
 import br.com.coldigogeladeiras.modelo.Produto;
+import br.com.coldigogeladeiras.modelo.Retorno;
 
 public interface ProdutoDAO {
-	public boolean inserir(Produto produto);
-	public List<JsonObject> buscarPorNome(String nome);
-	public boolean deletar(int id);
-	public Produto buscarPorId(int id);
-	public boolean alterar(Produto produto);
+	public Retorno buscarPorId(int id);
+	public Retorno buscarPorNome(String nome);
+	public Retorno inserir(Produto produto);
+	public Retorno deletar(int id);
+	public Retorno alterar(Produto produto);
 }
