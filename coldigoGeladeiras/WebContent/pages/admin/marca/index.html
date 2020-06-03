@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+      <meta name="description" content="Administração do Site da Coldigo Geladeiras">
+      <meta name="keywords" content="Geladeiras, Frost-free, Refrigeração">
+      <meta name="author" content="Escola Sistêmica">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+      <link rel="stylesheet" type="text/css" href="/coldigoGeladeiras/css/admin.css">
+    <title>Coldigo Geladeiras - Administração</title>
+  </head>
+
+  <body>
+    <script src="/coldigoGeladeiras/js/marca.js"></script>
+    
+    <h2>Registro de Marcas</h2>
+    <form name="frmAddMarca" id="addMarca" class="frmInserir">
+      <fieldset>
+        <legend>Nova Marca</legend>
+
+        <table>
+          <tr>
+            <td>Nome</td>
+            <td>
+              <input type="text" name="nome">
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="2">
+              <button type="button" onclick="COLDIGO.marca.cadastrar()">Cadastrar</button>
+              <button type="reset">Limpar</button>
+            </td>
+          </tr>
+        </table>
+      </fieldset>
+    </form>
+
+    <h3>Marcas Registradas</h3>
+    <form id="filtraMarca" class="frmFiltrar" onsubmit="">
+        <fieldset>
+            <legend>Filtrar</legend>
+            <input type="text" name="txtBusca" id="campoBuscaMarca" placeholder="Pesquise pelo nome">
+            <button type="button" onclick="COLDIGO.marca.buscarPorNome()">Buscar</button>
+        </fieldset>
+    </form>
+
+    <div id="listaMarcas" class="listaRegistros"></div>
+
+    <div id="modalEditarMarca" class="modalEditar">
+      <form name="frmEditarMarca" id="editarMarca" class="frmEditar">
+        <table>
+          <tr>
+            <th>Nome</th>
+            <td>
+                <input type="text" name="nome">
+            </td>
+          </tr>
+
+          <tr>
+            <th>Status</th>
+            <td>
+              <label class="switch">
+                <input name="status" type="checkbox">
+                <span class="slider"></span>
+              </label>
+            </td>
+          </tr>
+        </table>
+        <input type="text" name="idMarca" class="hidden">
+      </form>
+    </div>
+  </body>
+</html>

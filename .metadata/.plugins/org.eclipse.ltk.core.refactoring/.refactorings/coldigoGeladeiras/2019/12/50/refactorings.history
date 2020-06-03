@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Convert local variable &apos;br.com.coldigogeladeiras.jdbc.JDBCProdutoDAO.buscarPorNome().produto&apos; in &apos;br.com.coldigogeladeiras.jdbc.JDBCProdutoDAO.buscarPorNome()&apos; to field&#x0D;&#x0A;- Original project: &apos;coldigoGeladeiras&apos;&#x0D;&#x0A;- Original element: &apos;br.com.coldigogeladeiras.jdbc.JDBCProdutoDAO.buscarPorNome().produto&apos;&#x0D;&#x0A;- Field name: &apos;produto&apos;&#x0D;&#x0A;- Initialize field in method&#x0D;&#x0A;- Declared visibility: &apos;private&apos;" description="Convert local variable &apos;produto&apos; to field" final="false" flags="2" id="org.eclipse.jdt.ui.promote.temp" initialize="1" input="/src&lt;br.com.coldigogeladeiras.jdbc{JDBCProdutoDAO.java" name="produto" selection="1606 14" stamp="1575766787897" static="false" version="1.0" visibility="2"/>
+</session>
